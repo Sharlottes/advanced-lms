@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.12",
+    "@mui/styles": "^5.11.12",
     "next": "13.2.3",
     "puppeteer": "^19.7.3",
     "react": "18.2.0",
