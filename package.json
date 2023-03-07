@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
+    "dom-to-image": "^2.6.0",
     "next": "13.2.3",
     "puppeteer": "^19.7.3",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@types/dom-to-image": "^2.6.4",
     "@types/node": "18.14.6",
     "@types/puppeteer": "^7.0.4",
     "@types/react": "18.0.28",
