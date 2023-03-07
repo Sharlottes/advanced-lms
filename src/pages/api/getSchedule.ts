@@ -1,6 +1,12 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
-import puppeteer, { type Page } from "puppeteer";
-import domtoimage from 'dom-to-image';
+import puppeteer, { ElementHandle } from "puppeteer";
+import { delay } from "@/utils/delay";
+import fs from 'fs';
+
+async function saveScreenshot(element: ElementHandle<Element>, filepath: string) {
+  const screenshot = await element.screenshot();
+  fs.writeFileSync(filepath, screenshot);
+}
 
 const KU_URL = "https://sugang.kyungnam.ac.kr";
 
@@ -43,17 +49,33 @@ export default async function handler(
   if(!hrefUrl) throw new Error("cannot find href!");
 
   await page.goto(hrefUrl);
-  await page.waitForNavigation({ timeout: 1000000000 });
-
+  await delay(1000);
   console.log("page change completed: ", page.url());
   
-  const FrameDOM = await page.$("#ReportViewerControl1_ucReportViewer1_ContentFrame")
-    .then(handle => handle?.jsonValue());
-  if(!FrameDOM) throw new Error("cannot find FrameDOM!");
+  const panelHandle = await page.$("#ReportViewerControl1_Panel1");
+  if(!panelHandle) throw new Error("cannot find panelHandle!");
+  await panelHandle.jsonValue().then(elem => elem.setAttribute("style", "overflow:visible"))
 
-  const url = await domtoimage.toPng(FrameDOM);
-  console.log("dom2image completed! - ", url);
-  res.status(200).send(JSON.stringify({ url }));
+  const frameHandle = await page.$("#ReportViewerControl1_ucReportViewer1_ContentFrame");
+  if(!frameHandle) throw new Error("cannot find frameHandle!");
+  const frameContent = await frameHandle.contentFrame();
+  if(!frameContent) throw new Error("cannot find frameContent!");
+  const { height, width } = await frameContent.evaluate(() => {
+    const body = document.body;
+    const html = document.documentElement;
+    return {
+      height: Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight),
+      width: Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth),
+    };
+  });await page.evaluate((iframe, height, width) => {
+    iframe.style.height = height + 'px';
+    iframe.style.width = width + 'px';
+  }, frameHandle as any, height, width);
+  const screenshot = await frameHandle.screenshot({ path: 'screenshot.png' });
+  
+  await browser.close();
+  console.log("browser close completed");
+  res.status(200);
 
   /*
   //await page.("#ReportViewerControl1_ucReportToolbar1_Menu_ITCNT13_SaveFormat_I", "Image");
@@ -80,6 +102,4 @@ export default async function handler(
   res.status(200).send(buffer);
   res.end();
   */
-  await browser.close();
-  console.log("browser close completed");
 }
