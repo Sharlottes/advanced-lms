@@ -1,12 +1,11 @@
 import React from "react";
 
 const HomePage: React.FC = () => {
-  React.useEffect(() => {
-    fetch("/api/crawel")
-      .then((res) => res.json())
-      .then(console.log);
-  }, []);
-  return <></>;
+  const handleClick = async () => {
+    const res = await fetch(`/api/getSchedule`)
+    if(!res.ok) return;
+  };
+  return <button onClick={handleClick}>go</button>;
 };
 
 export default HomePage;
