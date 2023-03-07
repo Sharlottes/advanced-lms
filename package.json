@@ -13,6 +13,10 @@
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.11.12",
     "@mui/styles": "^5.11.12",
+    "cheerio": "^1.0.0-rc.12",
+    "dom-to-image": "^2.6.0",
+    "next": "13.2.3",
+    "puppeteer": "^19.7.3",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
