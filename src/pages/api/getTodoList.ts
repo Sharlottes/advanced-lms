@@ -23,17 +23,11 @@ export default async function handler(
         .replaceAll("'", "")
         .split(",");
 
-      console.log("classId: ", classId);
-      console.log("todoId: ", todoId);
-      console.log("todoType: ", todoType);
-
       const $ = loadCheerio(todo);
       const title = $(".todo_title").text();
       const subject = $(".todo_subjt").text();
       const dday = $(".todo_d_day").text();
       const date = $(".todo_date").text();
-      console.log("title content: ", title);
-      console.log("subject content: ", subject);
 
       return {
         classId,

@@ -7,7 +7,6 @@ const HomePage: React.FC = () => {
       .then((res) => res.json())
       .catch(() => undefined);
     if (!res) return;
-    console.log(res.content);
     setHtml(
       <div
         dangerouslySetInnerHTML={{ __html: JSON.stringify(res.content) }}
