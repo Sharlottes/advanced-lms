@@ -1,0 +1,3 @@
+interface CrawlResponse {
+  content: string;
+}
