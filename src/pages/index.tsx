@@ -3,7 +3,7 @@ import React from "react";
 const HomePage: React.FC = () => {
   const [html, setHtml] = React.useState<JSX.Element>();
   const handleClick = async () => {
-    const res: CrawlResponse = await fetch(`/api/crawl`)
+    const res: GetTodoListResponse = await fetch(`/api/getTodoList`)
       .then((res) => res.json())
       .catch(() => undefined);
     if (!res) return;
