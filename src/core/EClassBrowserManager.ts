@@ -1,6 +1,12 @@
 import BrowserManager from "@/core/BrowserManager";
 import { type CheerioAPI, load as loadCheerio } from "cheerio";
 
+const queryData: Record<TODOData["todoType"], string> = {
+  project: "PROJECT_SEQ",
+  report: "RT_SEQ",
+  test: "exam_setup_seq",
+};
+
 const KU_ECLASS_LOGIN_URL =
   "https://cyber.kyungnam.ac.kr/ilos/main/member/login_form.acl";
 
@@ -41,11 +47,37 @@ class EClassBrowserManager extends BrowserManager {
     return wrap;
   }
 
-  public async getTodoList() {
+  public async getTodoList(): Promise<TODOData[]> {
     await this.currentPage.click('div[title="Todo List"]');
     await this.reloadCheerio();
     const todo_list = this.mainPage$("#todo_list");
-    return todo_list;
+    return todo_list
+      .children(".todo_wrap[onclick]")
+      .map((_, todo) => {
+        const [classId, todoId, todoType] = todo.attribs.onclick
+          .match(/\((.*)\)/)!
+          .at(1)!
+          .replaceAll("'", "")
+          .split(",") as [string, string, TODOData["todoType"]];
+
+        const $ = loadCheerio(todo);
+        const title = $(".todo_title").text();
+        const subject = $(".todo_subjt").text();
+        const dday = $(".todo_d_day").text();
+        const date = $(".todo_date").text();
+
+        return {
+          classId,
+          todoId,
+          todoType,
+          title,
+          subject,
+          dday,
+          date,
+          link: `https://cyber.kyungnam.ac.kr/ilos/st/course/${todoType}_view_form.acl?${queryData[todoType]}=${todoId}`,
+        } satisfies TODOData;
+      })
+      .toArray();
   }
 
   async reloadCheerio() {
