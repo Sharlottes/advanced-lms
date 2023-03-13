@@ -20,7 +20,7 @@ class EClassBrowserManager extends BrowserManager {
 
   async auth() {
     console.log("page changing...");
-    await this.currentPage.goto(KU_ECLASS_LOGIN_URL);
+    await this.currentPage.goto(KU_ECLASS_LOGIN_URL, { timeout: 1000000000 });
     console.log("page change completed: ", this.currentPage.url());
 
     await this.currentPage.focus("#usr_id");
