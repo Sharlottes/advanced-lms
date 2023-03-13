@@ -1,10 +1,12 @@
 import BrowserManager from "@/core/BrowserManager";
-import { load as loadCheerio } from "cheerio";
+import { type CheerioAPI, load as loadCheerio } from "cheerio";
 
 const KU_ECLASS_LOGIN_URL =
   "https://cyber.kyungnam.ac.kr/ilos/main/member/login_form.acl";
 
 class EClassBrowserManager extends BrowserManager {
+  public mainPage$!: CheerioAPI;
+
   public constructor(private id: string, private password: string) {
     super();
   }
@@ -28,23 +30,21 @@ class EClassBrowserManager extends BrowserManager {
     await this.currentPage.click("#login_btn");
     await this.currentPage.waitForNavigation({ timeout: 1000000000 });
     console.log("page login completed: ", this.currentPage.url());
+
+    const content = await this.currentPage.content();
+    this.mainPage$ = loadCheerio(content);
+    this.mainPage$("script, style").remove();
   }
 
   public async getMainPage() {
-    const content = await this.currentPage.content();
-    const $ = loadCheerio(content);
-    $("script, style").remove();
-    const wrap = $("#wrap");
+    const wrap = this.mainPage$("#wrap");
     return wrap;
   }
 
   public async getTodoList() {
     await this.currentPage.click('div[title="Todo List"]');
-    const content = await this.currentPage.content();
-    const $ = loadCheerio(content);
-    $("script, style").remove();
-    const wrap = $("#todo_list");
-    return wrap;
+    const todo_list = this.mainPage$("#todo_list");
+    return todo_list;
   }
 }
 
