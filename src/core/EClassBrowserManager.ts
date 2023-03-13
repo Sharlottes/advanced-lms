@@ -5,6 +5,7 @@ const queryData: Record<TODOData["todoType"], string> = {
   project: "PROJECT_SEQ",
   report: "RT_SEQ",
   test: "exam_setup_seq",
+  survey: "SURVEY_SEQ",
 };
 
 const KU_ECLASS_LOGIN_URL =
