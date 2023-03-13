@@ -6,10 +6,9 @@ import Typography from "@mui/material/Typography";
 
 import Link from "next/link";
 import LoginForm from "@/components/LoginForm";
-import mockData from "../../public/mock/todo_data.json";
 
 const HomePage: React.FC = () => {
-  const [todos, setTodos] = React.useState<TODOData[]>(mockData as TODOData[]);
+  const [todos, setTodos] = React.useState<TODOData[]>([]);
 
   return (
     <>
