@@ -8,7 +8,7 @@ interface GetTodoListResponse {
 interface TODOData {
   classId: string;
   todoId: string;
-  todoType: "report" | "project"; //TODO: todoType 더 채우기
+  todoType: "report" | "project" | "test"; //TODO: todoType 더 채우기
   title: string;
   subject: string;
   dday: string;

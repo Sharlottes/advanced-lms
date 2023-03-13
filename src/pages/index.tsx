@@ -4,11 +4,12 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 
 const queryData: Record<TODOData["todoType"], string> = {
-  project: "PROJECT",
-  report: "RT",
+  project: "PROJECT_SEQ",
+  report: "RT_SEQ",
+  test: "exam_setup_seq",
 };
 const getLink = (type: TODOData["todoType"], id: TODOData["todoId"]) =>
-  `https://cyber.kyungnam.ac.kr/ilos/st/course/${type}_view_form.acl?${queryData[type]}_SEQ=${id}`;
+  `https://cyber.kyungnam.ac.kr/ilos/st/course/${type}_view_form.acl?${queryData[type]}=${id}`;
 const HomePage: React.FC = () => {
   const [todos, setTodos] = React.useState<TODOData[]>(mockData as TODOData[]);
 
