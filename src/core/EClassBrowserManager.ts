@@ -43,8 +43,15 @@ class EClassBrowserManager extends BrowserManager {
 
   public async getTodoList() {
     await this.currentPage.click('div[title="Todo List"]');
+    await this.reloadCheerio();
     const todo_list = this.mainPage$("#todo_list");
     return todo_list;
+  }
+
+  async reloadCheerio() {
+    const content = await this.currentPage.content();
+    this.mainPage$ = loadCheerio(content);
+    this.mainPage$("script, style").remove();
   }
 }
 

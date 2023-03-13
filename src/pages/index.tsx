@@ -8,7 +8,11 @@ const HomePage: React.FC = () => {
       .catch(() => undefined);
     if (!res) return;
     console.log(res.content);
-    setHtml(<div dangerouslySetInnerHTML={{ __html: res.content }}></div>);
+    setHtml(
+      <div
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(res.content) }}
+      ></div>
+    );
   };
   return (
     <>
