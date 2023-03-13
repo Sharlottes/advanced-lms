@@ -2,6 +2,12 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 import EClassBrowserManager from "@/core/EClassBrowserManager";
 import { load as loadCheerio } from "cheerio";
 
+const queryData: Record<TODOData["todoType"], string> = {
+  project: "PROJECT_SEQ",
+  report: "RT_SEQ",
+  test: "exam_setup_seq",
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -16,12 +22,12 @@ export default async function handler(
   const wrap = await manager.getTodoList();
   const datas = wrap
     .children(".todo_wrap[onclick]")
-    .map((i, todo) => {
+    .map((_, todo) => {
       const [classId, todoId, todoType] = todo.attribs.onclick
         .match(/\((.*)\)/)!
         .at(1)!
         .replaceAll("'", "")
-        .split(",");
+        .split(",") as [string, string, TODOData["todoType"]];
 
       const $ = loadCheerio(todo);
       const title = $(".todo_title").text();
@@ -37,7 +43,8 @@ export default async function handler(
         subject,
         dday,
         date,
-      } as TODOData;
+        link: `https://cyber.kyungnam.ac.kr/ilos/st/course/${todoType}_view_form.acl?${queryData[todoType]}=${todoId}`,
+      } satisfies TODOData;
     })
     .toArray();
   res.send(JSON.stringify({ content: datas }));
