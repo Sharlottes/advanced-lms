@@ -8,7 +8,7 @@ const queryData: Record<TODOData["todoType"], string> = {
   report: "RT",
 };
 const getLink = (type: TODOData["todoType"], id: TODOData["todoId"]) =>
-  `https://cyber.kyungnam.ac.kr/ilos/st/course/${type}_view_form.acl?${queryData[type]}=${id}`;
+  `https://cyber.kyungnam.ac.kr/ilos/st/course/${type}_view_form.acl?${queryData[type]}_SEQ=${id}`;
 const HomePage: React.FC = () => {
   const [todos, setTodos] = React.useState<TODOData[]>(mockData as TODOData[]);
 
