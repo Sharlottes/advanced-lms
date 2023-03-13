@@ -42,6 +42,7 @@ const LoginForm: React.FC<{ setTodos(todos: TODOData[]): void }> = ({
         onChange={makeStateSetter("password")}
         variant="standard"
         placeholder="password"
+        type="password"
       />
       <Button
         disabled={!states.id || !states.password}
