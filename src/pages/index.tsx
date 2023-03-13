@@ -1,23 +1,20 @@
 import React from "react";
-import mockData from "../../public/mock/todo_data.json";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+
 import Link from "next/link";
+import LoginForm from "@/components/LoginForm";
+import mockData from "../../public/mock/todo_data.json";
 
 const HomePage: React.FC = () => {
   const [todos, setTodos] = React.useState<TODOData[]>(mockData as TODOData[]);
 
-  const handleClick = async () => {
-    const res: GetTodoListResponse = await fetch(
-      `/api/getTodoDetail/?classId=${todos[0].classId}&link=${todos[0].link}`
-    )
-      .then((res) => res.json())
-      .catch(() => undefined);
-    if (!res) return;
-    console.log(res.content);
-  };
   return (
     <>
-      <button onClick={handleClick}>go</button>
+      <LoginForm setTodos={setTodos} />
+      <Divider>result</Divider>
       <Stack divider={<Divider />}>
         {todos.map((todo, i) => (
           <Link href={todo.link} key={i}>
