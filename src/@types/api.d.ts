@@ -1,8 +1,13 @@
 interface CrawlResponse {
   content: string;
 }
+
 interface GetTodoListResponse {
   content: TODOData[];
+}
+
+interface GetTodoDetailResponse {
+  content: string[];
 }
 
 interface TODOData {

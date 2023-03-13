@@ -50,32 +50,55 @@ class EClassBrowserManager extends BrowserManager {
   public async getTodoList(): Promise<TODOData[]> {
     await this.currentPage.click('div[title="Todo List"]');
     await this.reloadCheerio();
-    const todo_list = this.mainPage$("#todo_list");
-    return todo_list
+    const todos = this.mainPage$("#todo_list")
       .children(".todo_wrap[onclick]")
-      .map((_, todo) => {
-        const [classId, todoId, todoType] = todo.attribs.onclick
-          .match(/\((.*)\)/)!
-          .at(1)!
-          .replaceAll("'", "")
-          .split(",") as [string, string, TODOData["todoType"]];
+      .toArray();
+    const result: TODOData[] = [];
+    for (const todo of todos) {
+      const [classId, todoId, todoType] = todo.attribs.onclick
+        .match(/\((.*)\)/)!
+        .at(1)!
+        .replaceAll("'", "")
+        .split(",") as [string, string, TODOData["todoType"]];
 
-        const $ = loadCheerio(todo);
-        const title = $(".todo_title").text();
-        const subject = $(".todo_subjt").text();
-        const dday = $(".todo_d_day").text();
-        const date = $(".todo_date").text();
+      const $ = loadCheerio(todo);
+      const title = $(".todo_title").text();
+      const subject = $(".todo_subjt").text();
+      const dday = $(".todo_d_day").text();
+      const date = $(".todo_date").text();
+      const link = `https://cyber.kyungnam.ac.kr/ilos/st/course/${todoType}_view_form.acl?${queryData[todoType]}=${todoId}`;
 
-        return {
-          classId,
-          todoId,
-          todoType,
-          title,
-          subject,
-          dday,
-          date,
-          link: `https://cyber.kyungnam.ac.kr/ilos/st/course/${todoType}_view_form.acl?${queryData[todoType]}=${todoId}`,
-        } satisfies TODOData;
+      result.push({
+        classId,
+        todoId,
+        todoType,
+        title,
+        subject,
+        dday,
+        date,
+        link,
+      });
+    }
+
+    return result;
+  }
+
+  public async getTodoDetail(classId: string, link: string): Promise<string[]> {
+    console.log("page changing...", link);
+    await this.currentPage.goto(link, { timeout: 1000000000 });
+    console.log("page change completed: ", this.currentPage.url());
+    await this.currentPage.addScriptTag({ content: `roomGo('${classId}');` });
+    await this.currentPage.waitForNavigation({ timeout: 1000000000 });
+
+    const table = await this.currentPage
+      .$(".bbsview")
+      .then((h) => h?.jsonValue());
+    if (!table) throw new Error("cannot find content table!");
+    const $ = loadCheerio(table.innerHTML);
+    return $("tr")
+      .map((_, el) => {
+        const $$ = loadCheerio(el);
+        return `${$$("th").text()}: ${$$("td").text()}`;
       })
       .toArray();
   }
