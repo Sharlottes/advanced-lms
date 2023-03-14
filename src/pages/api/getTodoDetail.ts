@@ -7,12 +7,7 @@ export default async function handler(
 ) {
   console.log("API requrest detected!");
 
-  const {
-    id = process.env.ID,
-    password = process.env.PASSWORD,
-    classId,
-    link,
-  } = req.query as Record<string, string>;
+  const { id, password, classId, link } = req.query as Record<string, string>;
   if (!id || !password || !classId || !link)
     throw new Error("you need id / password / classId / link to get data!");
 

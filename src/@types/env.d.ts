@@ -1,4 +1,4 @@
 export interface Envs {
-  ID: string;
-  PASSWORD: string;
+  GOOGLE_ID: string;
+  GOOGLE_SECRET: string;
 }

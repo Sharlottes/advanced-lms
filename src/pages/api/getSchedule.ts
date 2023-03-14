@@ -1,9 +1,12 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
 import puppeteer, { ElementHandle } from "puppeteer";
 import { delay } from "@/utils/delay";
-import fs from 'fs';
+import fs from "fs";
 
-async function saveScreenshot(element: ElementHandle<Element>, filepath: string) {
+async function saveScreenshot(
+  element: ElementHandle<Element>,
+  filepath: string
+) {
   const screenshot = await element.screenshot();
   fs.writeFileSync(filepath, screenshot);
 }
@@ -15,9 +18,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   console.log("API requrest detected!");
-  
-  const { id = process.env.ID, password = process.env.PASSWORD } = req.query as Record<string, string>;
-  if(!id || !password) throw new Error("you need id / password to get data!");
+  const { id, password } = req.query as Record<string, string>;
+  if (!id || !password) throw new Error("you need id / password to get data!");
 
   console.log("browser launching...");
   const browser = await puppeteer.launch({
@@ -43,36 +45,58 @@ export default async function handler(
 
   await page.click("table tr:nth-child(3) a");
   const hrefUrl = await page
-    .$("a[onclick=\"OnMenu(20)\"]")
-    .then(handle => handle?.getProperty("href"))
-    .then(prop => prop?.toString().split("JSHandle:")[1]);
-  if(!hrefUrl) throw new Error("cannot find href!");
+    .$('a[onclick="OnMenu(20)"]')
+    .then((handle) => handle?.getProperty("href"))
+    .then((prop) => prop?.toString().split("JSHandle:")[1]);
+  if (!hrefUrl) throw new Error("cannot find href!");
 
   await page.goto(hrefUrl);
   await delay(1000);
   console.log("page change completed: ", page.url());
-  
-  const panelHandle = await page.$("#ReportViewerControl1_Panel1");
-  if(!panelHandle) throw new Error("cannot find panelHandle!");
-  await panelHandle.jsonValue().then(elem => elem.setAttribute("style", "overflow:visible"))
 
-  const frameHandle = await page.$("#ReportViewerControl1_ucReportViewer1_ContentFrame");
-  if(!frameHandle) throw new Error("cannot find frameHandle!");
+  const panelHandle = await page.$("#ReportViewerControl1_Panel1");
+  if (!panelHandle) throw new Error("cannot find panelHandle!");
+  await panelHandle
+    .jsonValue()
+    .then((elem) => elem.setAttribute("style", "overflow:visible"));
+
+  const frameHandle = await page.$(
+    "#ReportViewerControl1_ucReportViewer1_ContentFrame"
+  );
+  if (!frameHandle) throw new Error("cannot find frameHandle!");
   const frameContent = await frameHandle.contentFrame();
-  if(!frameContent) throw new Error("cannot find frameContent!");
+  if (!frameContent) throw new Error("cannot find frameContent!");
   const { height, width } = await frameContent.evaluate(() => {
     const body = document.body;
     const html = document.documentElement;
     return {
-      height: Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight),
-      width: Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth),
+      height: Math.max(
+        body.scrollHeight,
+        body.offsetHeight,
+        html.clientHeight,
+        html.scrollHeight,
+        html.offsetHeight
+      ),
+      width: Math.max(
+        body.scrollWidth,
+        body.offsetWidth,
+        html.clientWidth,
+        html.scrollWidth,
+        html.offsetWidth
+      ),
     };
-  });await page.evaluate((iframe, height, width) => {
-    iframe.style.height = height + 'px';
-    iframe.style.width = width + 'px';
-  }, frameHandle as any, height, width);
-  const screenshot = await frameHandle.screenshot({ path: 'screenshot.png' });
-  
+  });
+  await page.evaluate(
+    (iframe, height, width) => {
+      iframe.style.height = height + "px";
+      iframe.style.width = width + "px";
+    },
+    frameHandle as any,
+    height,
+    width
+  );
+  const screenshot = await frameHandle.screenshot({ path: "screenshot.png" });
+
   await browser.close();
   console.log("browser close completed");
   res.status(200);
