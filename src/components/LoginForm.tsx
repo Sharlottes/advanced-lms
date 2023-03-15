@@ -17,7 +17,9 @@ const LoginForm: React.FC<{ setTodos(todos: TODOData[]): void }> = ({
     };
 
   const handleClick = async () => {
-    const res: GetTodoListResponse = await fetch("/api/getTodoList")
+    const res: GetTodoListResponse = await fetch(
+      `/api/getTodoList?id=${states.id}&password=${states.password}`
+    )
       .then((res) => res.json())
       .catch(() => undefined);
     if (!res) return;
