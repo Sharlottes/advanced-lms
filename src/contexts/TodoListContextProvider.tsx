@@ -7,13 +7,10 @@ const TodoListContextProvider: React.FC<React.PropsWithChildren> = ({
   const [todoList, setTodoList] = React.useState<TODOData[]>([]);
 
   const fetchTodoList = async (id: string, password: string) => {
-    const res: GetTodoListResponse = await fetch(
-      `/api/getTodoList?id=${id}&password=${password}`
-    )
-      .then((res) => res.json())
-      .catch(() => undefined);
-    if (!res) return;
-    setTodoList(res.content);
+    const res = await fetch(`/api/getTodoList?id=${id}&password=${password}`);
+    if (!res.ok) throw new Error(res.statusText);
+    const data: GetTodoListResponse = await res.json();
+    setTodoList(data.content);
   };
 
   return (
