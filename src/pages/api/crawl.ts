@@ -11,7 +11,6 @@ export default async function handler(
 
   const manager = await new EClassBrowserManager(id, password).start();
   const wrap = await manager.getMainPage();
-  console.log(wrap.toString());
   res.send(JSON.stringify({ content: wrap.toString() }));
   manager.close();
 }
