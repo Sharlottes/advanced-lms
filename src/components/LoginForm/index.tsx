@@ -5,27 +5,27 @@ import TextField from "@mui/material/TextField";
 import { LoginFormContainer } from "./styled";
 import GoogleIcon from "../icons/GoogleIcon";
 
-import useLoginForm from "@/hooks/useLoginForm";
 import SubmitButton from "./SubmitButton";
 import OAuthButton from "../OAuthButton";
+import useLoginContext from "@/hooks/useLoginContext";
 
 const LoginForm: React.FC = () => {
-  const [states, makeStateSetter] = useLoginForm();
+  const { setId, setPassword } = useLoginContext();
 
   return (
     <LoginFormContainer>
       <TextField
-        onChange={makeStateSetter("id")}
+        onChange={(e) => setId(e.target.value)}
         variant="standard"
         placeholder="id"
       />
       <TextField
-        onChange={makeStateSetter("password")}
+        onChange={(e) => setPassword(e.target.value)}
         variant="standard"
         placeholder="password"
         type="password"
       />
-      <SubmitButton {...states} />
+      <SubmitButton />
       <Divider>OR</Divider>
       <OAuthButton
         baseColor="#679df6"

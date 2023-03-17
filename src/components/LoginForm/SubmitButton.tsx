@@ -3,8 +3,10 @@ import React from "react";
 import Button from "@mui/material/Button";
 
 import useTodoListContext from "@/hooks/useTodoListContext";
+import useLoginContext from "@/hooks/useLoginContext";
 
-const SubmitButton: React.FC<LoginState> = ({ id, password }) => {
+const SubmitButton: React.FC = () => {
+  const { id, password } = useLoginContext();
   const { fetchTodoList } = useTodoListContext();
 
   const handleSubmit = () => fetchTodoList(id, password);
