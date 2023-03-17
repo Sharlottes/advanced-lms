@@ -1,15 +1,16 @@
 import type { AppProps } from "next/app";
 import CssBaseline from "@mui/material/CssBaseline";
-import "../../public/global.css";
+import { SessionProvider } from "next-auth/react";
 
-const App = (props: AppProps) => {
-  const { Component, pageProps } = props;
-
+const App: React.FC<AppProps> = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
   return (
-    <>
+    <SessionProvider session={session}>
       <CssBaseline />
       <Component {...pageProps} />
-    </>
+    </SessionProvider>
   );
 };
 

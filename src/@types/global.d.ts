@@ -1,7 +1,4 @@
-import type { Envs } from "./env";
-
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv extends Envs {}
-  }
+interface LoginState {
+  id: string;
+  password: string;
 }
