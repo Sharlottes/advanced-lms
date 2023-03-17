@@ -20,7 +20,7 @@ class BrowserManager {
     console.log("browser launching...");
     this.browser = await puppeteer.launch({
       ignoreHTTPSErrors: true,
-      headless: true,
+      headless: false,
       defaultViewport: {
         width: 500,
         height: 358,

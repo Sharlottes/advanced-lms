@@ -2,12 +2,17 @@ import useFetchTodoItemDetail from "@/hooks/useFetchTodoItemDetail";
 import React from "react";
 
 export interface TodoItemDetailProps {
+  todoId: string;
   classId: string;
-  link: string;
+  type: string;
 }
 
-const TodoItemDetail: React.FC<TodoItemDetailProps> = ({ classId, link }) => {
-  const { data } = useFetchTodoItemDetail(classId, link);
+const TodoItemDetail: React.FC<TodoItemDetailProps> = ({
+  todoId,
+  classId,
+  type,
+}) => {
+  const { data } = useFetchTodoItemDetail(todoId, classId, type);
 
   return (
     <>

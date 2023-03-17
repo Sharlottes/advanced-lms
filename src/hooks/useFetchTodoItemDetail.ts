@@ -1,7 +1,11 @@
 import useLoginContext from "@/hooks/useLoginContext";
 import useSWR from "swr";
 
-const useFetchTodoItemDetail = (classId: string, link: string) => {
+const useFetchTodoItemDetail = (
+  todoId: string,
+  classId: string,
+  type: string
+) => {
   const { id, password } = useLoginContext();
 
   const fetcher = (url: string) =>
@@ -10,9 +14,14 @@ const useFetchTodoItemDetail = (classId: string, link: string) => {
       .then((data) => data.content);
 
   return useSWR<string[]>(
-    `/api/getTodoDetail/?id=${id}&password=${password}&class_id=${classId}&link=${link}`,
+    `/api/getTodoDetail/?id=${id}&password=${password}&todo_id=${todoId}&class_id=${classId}&type=${type}`,
     fetcher,
-    { suspense: true }
+    {
+      suspense: true,
+      revalidateIfStale: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+    }
   );
 };
 

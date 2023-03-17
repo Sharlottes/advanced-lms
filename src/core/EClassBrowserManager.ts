@@ -86,24 +86,21 @@ class EClassBrowserManager extends BrowserManager {
     return result;
   }
 
-  public async getTodoDetail(classId: string, link: string): Promise<string[]> {
-    console.log("page changing...", link);
-    await this.currentPage.goto(link);
-    console.log("page change completed: ", this.currentPage.url());
-    await this.currentPage.addScriptTag({ content: `roomGo('${classId}');` });
+  public async getTodoDetail(
+    todoId: string,
+    classId: string,
+    type: string
+  ): Promise<string[]> {
+    await this.currentPage.$eval(
+      "body",
+      `goLecture('${classId}','${todoId}','${type}')`
+    );
     await this.currentPage.waitForNavigation();
+    console.log("page change completed: ", this.currentPage.url());
 
-    const table = await this.currentPage
-      .$(".bbsview")
-      .then((h) => h?.jsonValue());
-    if (!table) throw new Error("cannot find content table!");
-    const $ = loadCheerio(table.innerHTML);
-    return $("tr")
-      .map((_, el) => {
-        const $$ = loadCheerio(el);
-        return `${$$("th").text()}: ${$$("td").text()}`;
-      })
-      .toArray();
+    const content = await this.currentPage.content();
+    const $ = loadCheerio(content);
+    return $("table.bbsview tr>th, table.bbsview tr>td").text().split("\n");
   }
 
   async reloadCheerio() {

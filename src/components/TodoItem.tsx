@@ -11,8 +11,9 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import TodoItemDetail from "./TodoItemDetail";
 
 const TodoItem: React.FC<TODOData> = ({
-  link,
   classId,
+  todoId,
+  todoType,
   title,
   subject,
   dday,
@@ -23,7 +24,12 @@ const TodoItem: React.FC<TODOData> = ({
 
   return (
     <Box p="10px 10%">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        onClick={handleClick}
+      >
         <Box>
           <Typography fontWeight="bold">{title}</Typography>
           <Typography variant="body1">{subject}</Typography>
@@ -44,7 +50,7 @@ const TodoItem: React.FC<TODOData> = ({
         <>
           <Divider sx={{ margin: "5px 0" }} />
           <React.Suspense fallback={<CircularProgress />}>
-            <TodoItemDetail link={link} classId={classId} />
+            <TodoItemDetail todoId={todoId} classId={classId} type={todoType} />
           </React.Suspense>
         </>
       </Collapse>
