@@ -10,7 +10,13 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import TodoItemDetail from "./TodoItemDetail";
 
-const TodoItem: React.FC<TODOData> = ({ link, title, subject, dday }) => {
+const TodoItem: React.FC<TODOData> = ({
+  link,
+  classId,
+  title,
+  subject,
+  dday,
+}) => {
   const [openDetail, setOpenDetail] = React.useState(false);
 
   const handleClick = () => setOpenDetail((prev) => !prev);
@@ -38,7 +44,7 @@ const TodoItem: React.FC<TODOData> = ({ link, title, subject, dday }) => {
         <>
           <Divider sx={{ margin: "5px 0" }} />
           <React.Suspense fallback={<CircularProgress />}>
-            <TodoItemDetail />
+            <TodoItemDetail link={link} classId={classId} />
           </React.Suspense>
         </>
       </Collapse>

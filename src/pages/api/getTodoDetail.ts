@@ -7,9 +7,14 @@ export default async function handler(
 ) {
   console.log("API requrest detected!");
 
-  const { id, password, classId, link } = req.query as Record<string, string>;
+  const {
+    id,
+    password,
+    class_id: classId,
+    link,
+  } = req.query as Record<string, string>;
   if (!id || !password || !classId || !link)
-    throw new Error("you need id / password / classId / link to get data!");
+    throw new Error("you need id / password / class_id / link to get data!");
 
   const manager = await new EClassBrowserManager(id, password).start();
   const datas = await manager.getTodoDetail(classId, link);

@@ -1,22 +1,17 @@
-import useLoginContext from "@/hooks/useLoginContext";
+import useFetchTodoItemDetail from "@/hooks/useFetchTodoItemDetail";
 import React from "react";
-import useSWR from "swr";
 
-const TodoItemDetail: React.FC = () => {
-  const { id, password } = useLoginContext();
+export interface TodoItemDetailProps {
+  classId: string;
+  link: string;
+}
 
-  const {
-    data: { content },
-    error,
-  } = useSWR<{ content: string[] }>(
-    `/api/getTodoDetail/?id=${id}&password=${password}`,
-    null,
-    { suspense: true }
-  );
+const TodoItemDetail: React.FC<TodoItemDetailProps> = ({ classId, link }) => {
+  const { data } = useFetchTodoItemDetail(classId, link);
 
   return (
     <>
-      {content.map((data, i) => (
+      {data.map((data, i) => (
         <div key={i}>{data}</div>
       ))}
     </>
