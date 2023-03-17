@@ -29,7 +29,7 @@ export default async function handler(
   console.log("browser launch completed");
 
   const page = await browser.newPage();
-  await page.goto(KU_URL, { timeout: 1000000000 });
+  await page.goto(KU_URL);
   console.log("page change completed: ", page.url());
 
   await page.focus("#txtUserID");
@@ -37,7 +37,7 @@ export default async function handler(
   await page.focus("#txtPassword");
   await page.keyboard.type(password);
   await page.click("#ibtnLogin");
-  await page.waitForNavigation({ timeout: 1000000000 });
+  await page.waitForNavigation();
   console.log("page login completed: ", page.url());
 
   await page.goto(KU_URL + "/Menu.aspx");

@@ -29,6 +29,7 @@ class BrowserManager {
     console.log("browser launch completed");
     console.log("page creating...");
     this.currentPage = await this.browser.newPage();
+    this.currentPage.setDefaultTimeout(1000 * 60);
     console.log("page create completed");
   }
 }

@@ -27,7 +27,7 @@ class EClassBrowserManager extends BrowserManager {
 
   async auth() {
     console.log("page changing...");
-    await this.currentPage.goto(KU_ECLASS_LOGIN_URL, { timeout: 1000000000 });
+    await this.currentPage.goto(KU_ECLASS_LOGIN_URL);
     console.log("page change completed: ", this.currentPage.url());
 
     await this.currentPage.focus("#usr_id");
@@ -35,7 +35,7 @@ class EClassBrowserManager extends BrowserManager {
     await this.currentPage.focus("#usr_pwd");
     await this.currentPage.keyboard.type(this.password);
     await this.currentPage.click("#login_btn");
-    await this.currentPage.waitForNavigation({ timeout: 1000000000 });
+    await this.currentPage.waitForNavigation();
     console.log("page login completed: ", this.currentPage.url());
 
     const content = await this.currentPage.content();
@@ -88,10 +88,10 @@ class EClassBrowserManager extends BrowserManager {
 
   public async getTodoDetail(classId: string, link: string): Promise<string[]> {
     console.log("page changing...", link);
-    await this.currentPage.goto(link, { timeout: 1000000000 });
+    await this.currentPage.goto(link);
     console.log("page change completed: ", this.currentPage.url());
     await this.currentPage.addScriptTag({ content: `roomGo('${classId}');` });
-    await this.currentPage.waitForNavigation({ timeout: 1000000000 });
+    await this.currentPage.waitForNavigation();
 
     const table = await this.currentPage
       .$(".bbsview")
