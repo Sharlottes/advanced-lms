@@ -17,6 +17,7 @@ const OAuthButton: React.FC<OAuthButtonProps> = ({
   accentColor,
   backgroundColor,
   authType,
+  ...props
 }) => {
   const handleClick = () => signIn(authType);
 
@@ -33,6 +34,7 @@ const OAuthButton: React.FC<OAuthButtonProps> = ({
           color: accentColor,
         },
       }}
+      {...props}
     >
       AUTH TO GOOGLE
     </Button>
