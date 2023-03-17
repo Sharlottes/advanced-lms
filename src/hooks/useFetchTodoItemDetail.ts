@@ -10,11 +10,11 @@ const useFetchTodoItemDetail = (
 
   const fetcher = (url: string) =>
     fetch(url)
-      .then<GetTodoDetailResponse>((r) => r.json())
+      .then<TodoDetailResponse>((r) => r.json())
       .then((data) => data.content);
 
   return useSWR<string[]>(
-    `/api/getTodoDetail/?id=${id}&password=${password}&todo_id=${todoId}&class_id=${classId}&type=${type}`,
+    `/api/todoDetail/?id=${id}&password=${password}&todo_id=${todoId}&class_id=${classId}&type=${type}`,
     fetcher,
     {
       suspense: true,

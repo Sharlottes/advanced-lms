@@ -2,11 +2,11 @@ interface CrawlResponse {
   content: string;
 }
 
-interface GetTodoListResponse {
+interface TodoListResponse {
   content: TODOData[];
 }
 
-interface GetTodoDetailResponse {
+interface TodoDetailResponse {
   content: string[];
 }
 
