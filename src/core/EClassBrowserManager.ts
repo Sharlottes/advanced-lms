@@ -81,6 +81,8 @@ class EClassBrowserManager extends BrowserManager {
       });
     }
 
+    console.log("todo list crawling is successfully done!");
+
     return result;
   }
 
