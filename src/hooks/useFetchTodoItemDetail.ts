@@ -4,7 +4,8 @@ import useSWR from "swr";
 const useFetchTodoItemDetail = (
   todoId: string,
   classId: string,
-  type: string
+  type: string,
+  onLoadingSlow = () => {}
 ) => {
   const { id, password } = useLoginContext();
 
@@ -13,7 +14,7 @@ const useFetchTodoItemDetail = (
       .then<TodoDetailResponse>((r) => r.json())
       .then((data) => data.content);
 
-  return useSWR<string[]>(
+  const result = useSWR<string[]>(
     `/api/todoDetail/?id=${id}&password=${password}&todo_id=${todoId}&class_id=${classId}&type=${type}`,
     fetcher,
     {
@@ -21,8 +22,12 @@ const useFetchTodoItemDetail = (
       revalidateIfStale: false,
       revalidateOnMount: false,
       revalidateOnReconnect: false,
+      loadingTimeout: 5 * 1000,
+      onLoadingSlow,
     }
   );
+
+  return result;
 };
 
 export default useFetchTodoItemDetail;

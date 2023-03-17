@@ -16,7 +16,7 @@ const App: React.FC<AppProps> = ({
       <LoginContextProvider>
         <TodoListContextProvider>
           <CssBaseline />
-          <SnackbarProvider>
+          <SnackbarProvider preventDuplicate>
             <Component {...pageProps} />
           </SnackbarProvider>
         </TodoListContextProvider>
