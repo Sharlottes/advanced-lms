@@ -5,3 +5,9 @@ declare global {
     interface ProcessEnv extends Envs {}
   }
 }
+
+declare module "next-auth" {
+  interface Session {
+    accessToken: any;
+  }
+}
