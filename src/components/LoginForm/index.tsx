@@ -10,7 +10,7 @@ import SubmitButton from "./SubmitButton";
 import OAuthButton from "../OAuthButton";
 
 const LoginForm: React.FC = () => {
-  const [, makeStateSetter] = useLoginForm();
+  const [states, makeStateSetter] = useLoginForm();
 
   return (
     <LoginFormContainer>
@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
         placeholder="password"
         type="password"
       />
-      <SubmitButton />
+      <SubmitButton {...states} />
       <Divider>OR</Divider>
       <OAuthButton
         baseColor="#679df6"
