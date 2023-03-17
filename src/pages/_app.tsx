@@ -5,6 +5,7 @@ import TodoListContextProvider from "@/contexts/TodoListContextProvider";
 
 import "../../public/global.css";
 import LoginContextProvider from "@/contexts/LoginContextProvider";
+import { SnackbarProvider } from "notistack";
 
 const App: React.FC<AppProps> = ({
   Component,
@@ -15,7 +16,9 @@ const App: React.FC<AppProps> = ({
       <LoginContextProvider>
         <TodoListContextProvider>
           <CssBaseline />
-          <Component {...pageProps} />
+          <SnackbarProvider>
+            <Component {...pageProps} />
+          </SnackbarProvider>
         </TodoListContextProvider>
       </LoginContextProvider>
     </SessionProvider>
