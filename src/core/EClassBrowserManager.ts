@@ -66,7 +66,7 @@ class EClassBrowserManager extends BrowserManager {
       const title = $(".todo_title").text();
       const subject = $(".todo_subjt").text();
       const dday = $(".todo_d_day").text();
-      const date = $(".todo_date").text();
+      const date = $("span.todo_date").text();
       const link = `https://cyber.kyungnam.ac.kr/ilos/st/course/${todoType}_view_form.acl?${queryData[todoType]}=${todoId}`;
 
       result.push({

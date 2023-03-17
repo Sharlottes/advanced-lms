@@ -17,6 +17,7 @@ const TodoItem: React.FC<TODOData> = ({
   title,
   subject,
   dday,
+  date,
 }) => {
   const [openDetail, setOpenDetail] = React.useState(false);
 
@@ -33,7 +34,11 @@ const TodoItem: React.FC<TODOData> = ({
         <Box>
           <Typography fontWeight="bold">{title}</Typography>
           <Typography variant="body1">{subject}</Typography>
-          <Typography>{`${dday}`}</Typography>
+          <Typography display="inline" fontWeight="bold">
+            {dday}
+          </Typography>{" "}
+          {" | "}
+          <Typography display="inline">{date}</Typography>
         </Box>
         <IconButton
           onClick={handleClick}
