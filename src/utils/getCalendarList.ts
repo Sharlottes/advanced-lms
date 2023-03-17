@@ -4,5 +4,4 @@ export const getCalendarList = async () => {
   );
   if (!res.ok) throw new Error(res.statusText);
   const data = await res.json();
-  console.log(data);
 };

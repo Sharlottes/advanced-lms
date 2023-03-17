@@ -21,7 +21,6 @@ export default async function handler(
 
   const manager = await new EClassBrowserManager(id, password).start();
   const datas = await manager.getTodoDetail(todoId, classId, type);
-  console.log(datas);
   res.send(JSON.stringify({ content: datas }));
   manager.close();
 }
