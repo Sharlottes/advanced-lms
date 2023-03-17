@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import TodoListContextProvider from "@/contexts/TodoListContextProvider";
 
 import "../../public/global.css";
+import LoginContextProvider from "@/contexts/LoginContextProvider";
 
 const App: React.FC<AppProps> = ({
   Component,
@@ -11,10 +12,12 @@ const App: React.FC<AppProps> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <TodoListContextProvider>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </TodoListContextProvider>
+      <LoginContextProvider>
+        <TodoListContextProvider>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </TodoListContextProvider>
+      </LoginContextProvider>
     </SessionProvider>
   );
 };
