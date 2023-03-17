@@ -22,6 +22,7 @@ const useFetchTodoItemDetail = (
       revalidateIfStale: false,
       revalidateOnMount: false,
       revalidateOnReconnect: false,
+      revalidateOnFocus: false,
       loadingTimeout: 5 * 1000,
       onLoadingSlow,
     }
