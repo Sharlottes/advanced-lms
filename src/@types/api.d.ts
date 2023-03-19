@@ -1,7 +1,3 @@
-interface CrawlResponse {
-  content: string;
-}
-
 interface TodoListResponse {
   content: TODOData[];
 }

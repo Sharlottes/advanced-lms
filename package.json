@@ -15,8 +15,6 @@
     "@mui/material": "^5.11.12",
     "@mui/styles": "^5.11.12",
     "cheerio": "^1.0.0-rc.12",
-    "dom-to-image": "^2.6.0",
-    "html2canvas": "^1.4.1",
     "next": "13.2.3",
     "next-auth": "^4.20.1",
     "notistack": "^3.0.1",
