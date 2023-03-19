@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 
 import useTodoListContext from "@/hooks/useTodoListContext";
-import TodoItem from "./TodoItem";
+import TodoItem from "./TodoItem/TodoItem";
 
 const TodoList: React.FC = () => {
   const { todoList } = useTodoListContext();
