@@ -7,7 +7,7 @@ interface TodoListResponse {
 }
 
 interface TodoDetailResponse {
-  content: string[];
+  content: [DetailType, string][];
 }
 
 interface TODOData {

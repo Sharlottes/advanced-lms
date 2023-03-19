@@ -1,5 +1,5 @@
 import BrowserManager from "@/core/BrowserManager";
-import { type CheerioAPI, load as loadCheerio } from "cheerio";
+import { type CheerioAPI, load as loadCheerio, Element } from "cheerio";
 
 const queryData: Record<TODOData["todoType"], string> = {
   project: "PROJECT_SEQ",
@@ -90,7 +90,7 @@ class EClassBrowserManager extends BrowserManager {
     todoId: string,
     classId: string,
     type: string
-  ): Promise<string[]> {
+  ): Promise<[DetailType, string][]> {
     await this.currentPage.$eval(
       "body",
       `goLecture('${classId}','${todoId}','${type}')`
@@ -100,7 +100,30 @@ class EClassBrowserManager extends BrowserManager {
 
     const content = await this.currentPage.content();
     const $ = loadCheerio(content);
-    return $("table.bbsview tr>th, table.bbsview tr>td").text().split("\n");
+    const contents = $("table.bbsview tr")
+      .toArray()
+      .map<[DetailType, string] | undefined>((tr) => {
+        if (tr.type !== "tag") return undefined;
+
+        const tableHead = tr.children.find(
+          (e): e is Element & { firstChild: Text } =>
+            e.type === "tag" && e.name == "th" && e.firstChild?.type === "text"
+        );
+
+        const tableDescribe = tr.children.find(
+          (e): e is Element & { firstChild: ChildNode } =>
+            e.type === "tag" && e.name == "td" && !!e?.firstChild
+        );
+
+        if (tableHead && tableDescribe)
+          return [
+            mapDetailKeys[tableHead.firstChild.data.replaceAll(" ", "")],
+            loadCheerio(tableDescribe).text(),
+          ];
+        else return ["description", $("table.bbsview tr td.textviewer").text()];
+      })
+      .filter((e): e is Exclude<typeof e, undefined> => !!e);
+    return contents;
   }
 
   async reloadCheerio() {
@@ -109,5 +132,15 @@ class EClassBrowserManager extends BrowserManager {
     this.mainPage$("script, style").remove();
   }
 }
+
+const mapDetailKeys: Record<string, DetailType> = {
+  제목: "title",
+  제출방식: "submit_method",
+  게시일: "created_at",
+  마감일: "ended_at",
+  배점: "points",
+  지각제출: "late_allowed",
+  점수공개: "points_showed",
+};
 
 export default EClassBrowserManager;

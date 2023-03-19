@@ -14,7 +14,7 @@ const useFetchTodoItemDetail = (
       .then<TodoDetailResponse>((r) => r.json())
       .then((data) => data.content);
 
-  const result = useSWR<string[]>(
+  const result = useSWR<[DetailType, string][]>(
     `/api/todoDetail/?id=${id}&password=${password}&todo_id=${todoId}&class_id=${classId}&type=${type}`,
     fetcher,
     {
