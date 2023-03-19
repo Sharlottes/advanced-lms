@@ -41,7 +41,6 @@ const TodoItem: React.FC<TODOData> = ({
           <Typography display="inline">{date}</Typography>
         </Box>
         <IconButton
-          onClick={handleClick}
           sx={{
             height: "fit-content",
             transition: "all 300ms",
