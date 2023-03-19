@@ -44,28 +44,28 @@ const TodoItemDetail: React.FC<TodoItemDetailProps> = ({
   >;
 
   return (
-    <div style={{ width: "768px" }}>
+    <div>
       <Box display="flex" gap="10px" flexWrap="wrap">
         <Typography variant="h5" fontWeight="bold">
           {todoDetailData.title}
         </Typography>
-        <Box display="flex" gap="10px" flexWrap="wrap">
-          <Chip label={`#${todoDetailData.submit_method} 제출`} />
-          <Chip label={`#지각 ${todoDetailData.late_allowed}`} />
-          <Chip label={`#배점 ${todoDetailData.points}`} />
-          <Chip label={`#점수 ${todoDetailData.points_showed}`} />
+        <Box display="flex" gap="10px" flexWrap="wrap" alignItems="center">
+          <Chip label={`#${todoDetailData.submit_method} 제출`} size="small" />
+          <Chip label={`#지각 ${todoDetailData.late_allowed}`} size="small" />
+          <Chip label={`#배점 ${todoDetailData.points}`} size="small" />
+          <Chip label={`#점수 ${todoDetailData.points_showed}`} size="small" />
         </Box>
+      </Box>
 
-        <Typography variant="body1" mt={1}>
-          {todoDetailData.description}
-        </Typography>
+      <Typography variant="body1" mt={1} mb={1} sx={{ maxWidth: "768px" }}>
+        {todoDetailData.description}
+      </Typography>
 
-        <Box display="flex" gap="5px" alignItems="center">
-          <Chip label={todoDetailData.created_at} />
-          <span>부터</span>
-          <Chip label={todoDetailData.ended_at} />
-          <span>까지 제출</span>
-        </Box>
+      <Box display="flex" gap="5px" alignItems="center">
+        <Chip label={todoDetailData.created_at} />
+        <span>부터</span>
+        <Chip label={todoDetailData.ended_at} />
+        <span>까지 제출</span>
       </Box>
     </div>
   );
