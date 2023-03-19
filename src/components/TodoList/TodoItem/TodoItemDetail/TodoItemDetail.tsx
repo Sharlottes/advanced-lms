@@ -7,17 +7,20 @@ import {
   TodoItemDetailDescription,
   TodoItemDetailSubmitDate,
 } from "./TodoItemDetail.styled";
+import Link from "next/link";
 
 export interface TodoItemDetailProps {
   todoId: string;
   classId: string;
   type: string;
+  link: string;
 }
 
 const TodoItemDetail: React.FC<TodoItemDetailProps> = ({
   todoId,
   classId,
   type,
+  link,
 }) => {
   const { data: todoDetailData } = useFetchTodoItemDetail(
     todoId,
@@ -35,6 +38,9 @@ const TodoItemDetail: React.FC<TodoItemDetailProps> = ({
         <Chip label={`#지각 ${todoDetailData.late_allowed}`} size="small" />
         <Chip label={`#배점 ${todoDetailData.points}`} size="small" />
         <Chip label={`#점수 ${todoDetailData.points_showed}`} size="small" />
+        <Link href={link ?? ""}>
+          <Chip label="> 바로가기" size="small" />
+        </Link>
       </TodoItemDetailChips>
       <TodoItemDetailDescription variant="body1">
         {todoDetailData.description}

@@ -18,6 +18,7 @@ const TodoItem: React.FC<TODOData> = ({
   subject,
   dday,
   date,
+  link,
 }) => {
   const [openDetail, setOpenDetail] = React.useState(false);
 
@@ -54,7 +55,12 @@ const TodoItem: React.FC<TODOData> = ({
         <>
           <Divider sx={{ margin: "5px 0" }} />
           <React.Suspense fallback={<CircularProgress />}>
-            <TodoItemDetail todoId={todoId} classId={classId} type={todoType} />
+            <TodoItemDetail
+              todoId={todoId}
+              classId={classId}
+              type={todoType}
+              link={link}
+            />
           </React.Suspense>
         </>
       </Collapse>
