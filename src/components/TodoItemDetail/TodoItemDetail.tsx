@@ -3,6 +3,12 @@ import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import { useSnackbar } from "notistack";
 import useFetchTodoItemDetail from "@/hooks/useFetchTodoItemDetail";
+import {
+  TodoItemDetailContainer,
+  TodoItemDetailChips,
+  TodoItemDetailDescription,
+  TodoItemDetailSubmitDate,
+} from "./TodoItemDetail.styled";
 
 export interface TodoItemDetailProps {
   todoId: string;
@@ -44,30 +50,29 @@ const TodoItemDetail: React.FC<TodoItemDetailProps> = ({
   >;
 
   return (
-    <div>
-      <Box display="flex" gap="10px" flexWrap="wrap">
-        <Typography variant="h5" fontWeight="bold">
-          {todoDetailData.title}
-        </Typography>
-        <Box display="flex" gap="10px" flexWrap="wrap" alignItems="center">
-          <Chip label={`#${todoDetailData.submit_method} 제출`} size="small" />
-          <Chip label={`#지각 ${todoDetailData.late_allowed}`} size="small" />
-          <Chip label={`#배점 ${todoDetailData.points}`} size="small" />
-          <Chip label={`#점수 ${todoDetailData.points_showed}`} size="small" />
-        </Box>
-      </Box>
-
-      <Typography variant="body1" mt={1} mb={1} sx={{ maxWidth: "768px" }}>
-        {todoDetailData.description}
+    <TodoItemDetailContainer>
+      <Typography variant="h5" fontWeight="bold">
+        {todoDetailData.title}
       </Typography>
-
-      <Box display="flex" gap="5px" alignItems="center">
-        <Chip label={todoDetailData.created_at} />
+      <TodoItemDetailChips>
+        <Chip label={`#${todoDetailData.submit_method} 제출`} size="small" />
+        <Chip label={`#지각 ${todoDetailData.late_allowed}`} size="small" />
+        <Chip label={`#배점 ${todoDetailData.points}`} size="small" />
+        <Chip label={`#점수 ${todoDetailData.points_showed}`} size="small" />
+      </TodoItemDetailChips>
+      <TodoItemDetailDescription variant="body1">
+        {todoDetailData.description}
+      </TodoItemDetailDescription>
+      <TodoItemDetailSubmitDate>
+        <Chip label={todoDetailData.created_at} size="small" />
         <span>부터</span>
-        <Chip label={todoDetailData.ended_at} />
-        <span>까지 제출</span>
-      </Box>
-    </div>
+        <Chip label={todoDetailData.ended_at} size="small" />
+        <span>
+          까지
+          <Chip label={`#${todoDetailData.submit_method} 제출`} size="small" />
+        </span>
+      </TodoItemDetailSubmitDate>
+    </TodoItemDetailContainer>
   );
 };
 

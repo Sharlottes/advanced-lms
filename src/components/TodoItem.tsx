@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-import TodoItemDetail from "./TodoItemDetail";
+import TodoItemDetail from "./TodoItemDetail/TodoItemDetail";
 
 const TodoItem: React.FC<TODOData> = ({
   classId,
