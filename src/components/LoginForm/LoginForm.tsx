@@ -2,11 +2,11 @@ import React from "react";
 
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
-import { LoginFormContainer } from "./styled";
+import { LoginFormContainer } from "./LoginForm.styled";
 import GoogleIcon from "../icons/GoogleIcon";
 
 import SubmitButton from "./SubmitButton";
-import OAuthButton from "../OAuthButton";
+import OAuthButton from "./OAuthButton";
 import useLoginContext from "@/hooks/useLoginContext";
 
 const LoginForm: React.FC = () => {
