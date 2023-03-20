@@ -17,6 +17,8 @@ const App: React.FC<AppProps> = ({
   <>
     <Head>
       <title>LMS Dashboard</title>
+      <meta name="description" content="KNU e-class dashboard" />
+      <meta name="author" content="Sharlotte" />
       <meta name="viewport" content="initial-scale=1, width=device-width" />
     </Head>
     <SessionProvider session={session}>
