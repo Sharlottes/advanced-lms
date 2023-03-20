@@ -10,12 +10,12 @@ const useFetchTodoItemDetail = (
   const { enqueueSnackbar } = useSnackbar();
   const { id, password } = useLoginContext();
 
-  const fetcher = (url: string) =>
-    fetch(url)
-      .then<TodoDetailResponse>((r) => r.json())
-      .then(
-        (data) => Object.fromEntries(data.content) as Record<DetailType, string>
-      );
+  const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(res.statusText);
+    const data: TodoDetailResponse = await res.json();
+    return Object.fromEntries(data.content) as Record<DetailType, string>;
+  };
 
   const result = useSWR<Record<DetailType, string>>(
     `/api/todoDetail/?id=${id}&password=${password}&todo_id=${todoId}&class_id=${classId}&type=${type}`,
