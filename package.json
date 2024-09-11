@@ -1,36 +1,31 @@
 {
-  "name": "eclass-dashboard",
-  "version": "0.1.0",
-  "private": true,
+  "name": "advanced-lms",
+  "displayName": "Advanced lms",
+  "version": "0.0.1",
+  "description": "여러 기능들을 추가 제공할 LMS 크롬 확장",
+  "author": "sharlottes",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
-    "@mui/icons-material": "^5.11.11",
-    "@mui/material": "^5.11.12",
-    "@mui/styles": "^5.11.12",
-    "cheerio": "^1.0.0-rc.12",
-    "next": "13.2.3",
-    "next-auth": "^4.20.1",
-    "notistack": "^3.0.1",
-    "puppeteer": "^19.7.3",
+    "plasmo": "0.89.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "swr": "^2.1.0"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/dom-to-image": "^2.6.4",
-    "@types/node": "18.14.6",
-    "@types/puppeteer": "^7.0.4",
-    "@types/react": "18.0.28",
-    "@types/react-dom": "18.0.11",
-    "eslint": "8.35.0",
-    "eslint-config-next": "13.2.3",
-    "typescript": "4.9.5"
+    "@ianvs/prettier-plugin-sort-imports": "4.1.1",
+    "@types/chrome": "0.0.258",
+    "@types/node": "20.11.5",
+    "@types/react": "18.2.48",
+    "@types/react-dom": "18.2.18",
+    "prettier": "3.2.4",
+    "typescript": "5.3.3"
+  },
+  "manifest": {
+    "host_permissions": [
+      "https://*/*"
+    ]
   }
 }
