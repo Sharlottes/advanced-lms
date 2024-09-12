@@ -1,0 +1,49 @@
+.vancedNotiContainer {
+  background: white;
+  height: calc(100% - 48px);
+  width: 100%;
+  max-width: 800px;
+  padding: 8px;
+  margin: 48px;
+  border-radius: 8px;
+  overflow-x: hidden;
+}
+
+.vancedNotiFilterBar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.vancedNotiFilterBtn {
+  border-radius: 4px;
+  padding: 4px;
+  border: 1px solid gray;
+}
+.vancedNotiFilterBtn[aria-selected="true"] {
+  background: lightblue;
+}
+.vancedNotiFilterBtn[aria-selected="false"] {
+  background: white;
+}
+
+.vancedSaperator {
+  margin: 8px 0;
+  border-bottom: 1px solid gray;
+}
+
+.vancedNotiList {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px;
+  overflow-y: auto;
+}
+.vancedNotiCard {
+  flex: 1;
+  cursor: pointer;
+  min-width: 240px;
+  max-width: 320px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 4px;
+}
