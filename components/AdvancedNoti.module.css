@@ -2,7 +2,7 @@
   background: white;
   height: calc(100% - 48px);
   width: 100%;
-  max-width: 800px;
+  max-width: 940px;
   padding: 8px;
   margin: 48px;
   border-radius: 8px;
@@ -32,18 +32,19 @@
 }
 
 .vancedNotiList {
-  display: flex;
+  display: grid;
   gap: 8px;
-  flex-wrap: wrap;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   padding: 8px;
   overflow-y: auto;
 }
 .vancedNotiCard {
   flex: 1;
   cursor: pointer;
-  min-width: 240px;
-  max-width: 320px;
+  min-height: 100px;
   border-radius: 4px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 4px;
+  display: flex;
+  flex-direction: column;
 }

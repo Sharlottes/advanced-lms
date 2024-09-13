@@ -4,7 +4,7 @@ interface Data {
   data: NotiData[];
 }
 interface NotiData {
-  listener: string;
+  id: string | null;
   subject: string;
   day: string;
   text: string;

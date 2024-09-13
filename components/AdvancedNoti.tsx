@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useStorage } from "@plasmohq/storage/hook";
 
@@ -31,6 +31,13 @@ async function fetchData(): Promise<Data> {
   const subjects = new Set<string>();
   for (const elem of elems) {
     const listener = elem.getAttribute("onclick");
+    const reg = listener?.match(/^(\w+)\((.+)\);$/);
+    let seq;
+    if (!reg) seq = null;
+    else if (reg[1] == "goSubjectPage") seq = reg[2].split(",")[1];
+    else seq = reg[2];
+    const id = seq ? +seq.slice(1, -1) : seq;
+
     const subject = elem
       .getElementsByClassName("notification_subject")[0]
       ?.firstElementChild.textContent.trim();
@@ -42,7 +49,7 @@ async function fetchData(): Promise<Data> {
     const title = t.firstElementChild.textContent.trim();
     if (title) titles.add(title);
     if (subject) subjects.add(subject);
-    dataList.push({ listener, subject, day, text, title });
+    dataList.push({ id, subject, day, text, title });
   }
   return {
     titles: Array.from(titles),
@@ -58,7 +65,9 @@ export default function AdvancedNoti() {
       : undefined
   );
   useEffect(() => {
-    if (data) return;
+    const noticeCnt = document.getElementById("notice_cnt");
+    console.log(data);
+    if (!noticeCnt && data) return;
     fetchData().then((d) => {
       setData(d);
       localStorage.setItem("data", JSON.stringify(d));
@@ -84,10 +93,55 @@ export default function AdvancedNoti() {
     }
   };
 
+  const [category, setCategory] = useState<
+    "title" | "subject" | "date" | undefined
+  >("date");
+  const categoryToLabel = {
+    title: "제목",
+    subject: "과목",
+    date: "날짜"
+  };
+  const dataList = data
+    ? category
+      ? Object.groupBy(data.data, (data) => {
+          switch (category) {
+            case "title":
+              return data.title;
+            case "subject":
+              return data.subject || "기타";
+            case "date":
+              const fullDate = data.day.match(/(\d{2})\.(\d{2})/);
+              if (fullDate) return `${fullDate[1]}월 ${fullDate[2]}일`;
+              const date = data.day.match(/\d일 전/);
+              if (date) return `${date[0]}`;
+              if (data.day.startsWith("어제")) return "어제";
+              return "오늘";
+          }
+        })
+      : data.data
+    : [];
+  const isValidData = (data: NotiData) =>
+    (selectedSubjects.size == 0 || selectedSubjects.has(data.subject)) &&
+    (selectedTitles.size == 0 || selectedTitles.has(data.title));
+
   return (
     <div
       className={styles.vancedNotiContainer}
       onClick={(e) => e.stopPropagation()}>
+      <div className={styles.vancedNotiFilterBar}>
+        {Object.keys(categoryToLabel).map((key) => (
+          <button
+            key={key}
+            className={styles.vancedNotiFilterBtn}
+            aria-selected={category === key}
+            onClick={() =>
+              setCategory((p) => (p === key ? undefined : (key as any)))
+            }>
+            {categoryToLabel[key]}
+          </button>
+        ))}
+      </div>
+      <div className={styles.vancedSaperator} />
       <div className={styles.vancedNotiFilterBar}>
         {data?.titles.map((title) => (
           <button
@@ -112,27 +166,50 @@ export default function AdvancedNoti() {
         ))}
       </div>
       <div className={styles.vancedSaperator} />
-      <div className={styles.vancedNotiList}>
-        {data?.data.map(
-          (d, i) =>
-            (selectedSubjects.size == 0 || selectedSubjects.has(d.subject)) &&
-            (selectedTitles.size == 0 || selectedTitles.has(d.title)) && (
-              <div
-                key={i}
-                onClick={() => eval(d.listener)}
-                className={styles.vancedNotiCard}>
-                <p style={{ fontWeight: "bold" }}>
-                  <span style={{ color: "#205D9E" }}>{d.title}</span>{" "}
-                  {d.subject}
-                </p>
-                <p style={{ fontSize: "1.2em", fontWeight: 500 }}>{d.text}</p>
-                <p style={{ fontWeight: "lighter", fontSize: "0.85em" }}>
-                  {d.day}
-                </p>
+      {Array.isArray(dataList) ? (
+        <div className={styles.vancedNotiList}>
+          {dataList.map(
+            (d, i) => isValidData(d) && <NotiDataCard key={i} {...d} />
+          )}
+        </div>
+      ) : (
+        Object.entries(dataList).map(
+          ([cate, data]) =>
+            data.some(isValidData) && (
+              <div key={cate} style={{ marginTop: "16px" }}>
+                <h3>{cate}</h3>
+                <div className={styles.vancedSaperator} />
+                <div className={styles.vancedNotiList}>
+                  {data.map(
+                    (d, i) => isValidData(d) && <NotiDataCard key={i} {...d} />
+                  )}
+                </div>
               </div>
             )
-        )}
-      </div>
+        )
+      )}
+    </div>
+  );
+}
+
+function NotiDataCard(data: NotiData) {
+  return (
+    <div
+      onClick={() =>
+        (document.location.href = `/ilos/mp/notification_connect.acl?NOTIFIER_SEQ=${data.id}`)
+      }
+      className={styles.vancedNotiCard}>
+      <p style={{ fontWeight: "bold" }}>
+        <span style={{ color: "#205D9E" }}>{data.title}</span> {data.subject}
+      </p>
+      <p style={{ fontSize: "1.2em", fontWeight: 500, flex: 1 }}>{data.text}</p>
+      <p
+        style={{
+          fontWeight: "lighter",
+          fontSize: "0.85em"
+        }}>
+        {data.day}
+      </p>
     </div>
   );
 }
