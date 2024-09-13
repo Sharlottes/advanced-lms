@@ -31,19 +31,28 @@ export default function PopupCollectButton() {
     <div
       style={{
         zIndex: 999,
-        position: "fixed"
+        position: "absolute",
+        inset: 0
       }}>
-      <button onClick={() => setIsOpen((prev) => !prev)}>
+      <button
+        onClick={() => setIsOpen((prev) => !prev)}
+        style={{
+          textWrap: "nowrap"
+        }}>
         팝업 {isOpen ? "닫기" : "열기"}
       </button>
       {isOpen && (
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            flexWrap: "wrap",
+            width: "calc(100vw - 18px)"
+          }}>
           {data.map(([uri, imgUri]) => (
-            <div key={uri}>
-              <a href={uri}>
-                <img src={imgUri} width={360} />
-              </a>
-            </div>
+            <a href={uri} key={uri}>
+              <img src={imgUri} width={360} />
+            </a>
           ))}
         </div>
       )}
